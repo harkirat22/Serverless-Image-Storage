@@ -4,8 +4,6 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
-
     <!-- Javascript SDK-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="js/amazon-cognito-auth.min.js"></script>
@@ -16,22 +14,16 @@
 
 
 <body>
-    <center>
-        <div>
-            <form>
-                <h1>REGISTER AN ACCOUNT</h1>
 
+    <h1 class="h3 mb-3 font-weight-normal" id="titleheader">Register an Account</h1>
 
-                <input type="text" class="form-control" id="firstname" placeholder="FirstName" pattern=".*" required><br>
-                <input type="text" class="form-control" id="lastname" placeholder="LastName" pattern=".*" required><br>
-                <input type="email" class="form-control" id="emailId" placeholder="Email" pattern=".*" required><br>
-                <input type="password" class="form-control" id="userpassword" placeholder="Password" pattern=".*" required><br>
-                <input type="password" class="form-control" id="confirmpassword" placeholder="Confirm Password" pattern=".*" required><br><br>
+    <input class="form-control" id="firstname" placeholder="FirstName" pattern=".*" required><br><br>
+    <input class="form-control" id="lastname" placeholder="LastName" pattern=".*" required><br><br>
+    <input type="email" class="form-control" id="emailId" placeholder="Email" pattern=".*" required><br><br>
+    <input type="password" class="form-control" id="userpassword" placeholder="Password" pattern=".*" required><br><br>
+    <input type="password" class="form-control" id="confirmpassword" placeholder="Confirm Password" pattern=".*" required><br><br>
+    <button id="mainbutton" class="btn btn-lg btn-primary btn-block" type="button" onclick="register()">Register</button>
 
-                <button type="button" onclick="register()">Register</button>
-            </form>
-        </div>
-    </center>
     <script>
         var firstname;
         var lastname;
@@ -95,10 +87,8 @@
                 }
                 cognitoUser = result.user;
                 console.log('user name is ' + cognitoUser.getUsername());
-
-                alert("Check your email for a verification link to sign in");
-                window.location.replace("/index.html");
-
+                //change elements of page
+                document.getElementById("titleheader").innerHTML = "Check your email for a verification link";
 
             });
         }
