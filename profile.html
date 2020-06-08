@@ -27,16 +27,23 @@
                 </p>
 
             </div>
+
+            <input id="upload" type='file'>
+            <p id="b64"></p>
+            <p hidden><img id="img" height="150"></p>
+
         </div>
     </center>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
+        var base64;
         var data = {
             UserPoolId: _config.cognito.userPoolId,
             ClientId: _config.cognito.clientId
         };
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
         var cognitoUser = userPool.getCurrentUser();
+        var authToken;
 
         window.onload = function() {
             if (cognitoUser != null) {
@@ -45,8 +52,8 @@
                         alert(err);
                         return;
                     }
-                    console.log('session validity: ' + session.getAccessToken().getJwtToken());
-                    //Set the profile info
+                    console.log('session validity: ' + session.isValid());
+                    authToken = session.getIdToken().getJwtToken();
                     cognitoUser.getUserAttributes(function(err, result) {
                         if (err) {
                             console.log(err);
@@ -69,6 +76,48 @@
                 window.location.replace("/index.html");
             }
         }
+
+
+        function readFile() {
+
+            console.log(authToken);
+
+            if (this.files && this.files[0]) {
+
+                var FR = new FileReader();
+
+                FR.addEventListener("load", function(e) {
+                    document.getElementById("img").src = e.target.result;
+                    var base64 = e.target.result.replace(/^data:image.+;base64,/, '');
+                });
+
+                FR.readAsDataURL(this.files[0]);
+            }
+            $.ajax({
+                method: 'POST',
+                url: 'https://9rkgyf1hxg.execute-api.us-east-1.amazonaws.com/prod/uploadimage-s3',
+                headers: {
+                    Authorization: authToken
+                },
+                data: JSON.stringify({
+                    name: "testing.jpg",
+                    file: base64
+                }),
+
+                success: function(result) {
+                    console.log('Response received from API: ', result);
+                },
+                error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                    console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                    console.error('Response: ', jqXHR.responseText);
+                    alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+                }
+            });
+        }
+
+
+
+        document.getElementById("upload").addEventListener("change", readFile);
     </script>
 </body>
 

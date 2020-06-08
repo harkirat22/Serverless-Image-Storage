@@ -58,8 +58,9 @@
 
             cognitoUser.authenticateUser(authDetails, {
                 onSuccess: function(result) {
-                    var accessToken = result.getAccessToken().getJwtToken();
-                    console.log(accessToken);
+                    var idtoken = result.getIdToken().getJwtToken();
+
+                    console.log(idtoken);
                     window.location.replace("/profile.html");
                 },
 
