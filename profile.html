@@ -36,7 +36,6 @@
     </center>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-        var base64;
         var data = {
             UserPoolId: _config.cognito.userPoolId,
             ClientId: _config.cognito.clientId
@@ -44,7 +43,7 @@
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
         var cognitoUser = userPool.getCurrentUser();
         var authToken;
-
+        var base64;
         window.onload = function() {
             if (cognitoUser != null) {
                 cognitoUser.getSession(function(err, session) {
@@ -88,11 +87,14 @@
 
                 FR.addEventListener("load", function(e) {
                     document.getElementById("img").src = e.target.result;
-                    var base64 = e.target.result.replace(/^data:image.+;base64,/, '');
+                    base64 = e.target.result.replace(/^data:image.+;base64,/, '');
+
                 });
 
                 FR.readAsDataURL(this.files[0]);
             }
+            console.log(base64);
+
             $.ajax({
                 method: 'POST',
                 url: 'https://9rkgyf1hxg.execute-api.us-east-1.amazonaws.com/prod/uploadimage-s3',
@@ -100,12 +102,12 @@
                     Authorization: authToken
                 },
                 data: JSON.stringify({
-                    name: "testing.jpg",
-                    file: base64
+                    'name': 'testing.jpg',
+                    'file': base64
                 }),
 
                 success: function(result) {
-                    console.log('Response received from API: ', result);
+                    alert(result.message);
                 },
                 error: function ajaxError(jqXHR, textStatus, errorThrown) {
                     console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
