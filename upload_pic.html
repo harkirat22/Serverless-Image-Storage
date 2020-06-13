@@ -1,38 +1,36 @@
 <html>
-	<head>
-		<style>
-		</style>
-		
-	</head>
-	<body>
-		<input id="upload" type='file'>
-		<p id="b64"></p>
-		<p hidden><img id="img" height="150"></p>
-		
-		<script>
 
+<head>
+    <style>
 
+    </style>
 
+</head>
 
-function readFile() {
-  
-  if (this.files && this.files[0]) {
-    
-    var FR= new FileReader();
-    
-    FR.addEventListener("load", function(e) {
-      document.getElementById("img").src       = e.target.result;
-      document.getElementById("b64").innerHTML = e.target.result;
-    }); 
-    
-    FR.readAsDataURL( this.files[0] );
-  }
-  
-}
+<body>
+    <input id="upload" type='file' onchange="readFile()">
+    <p id="b64"></p>
+    <p hidden><img id="img" height="150"></p>
 
-document.getElementById("upload").addEventListener("change", readFile);
+    <script>
+        function readFile() {
 
-		</script>
-		</body>
+            if (this.files && this.files[0]) {
+
+                var FR = new FileReader();
+
+                FR.addEventListener("load", function(e) {
+                    document.getElementById("img").src = e.target.result;
+                    document.getElementById("b64").innerHTML = e.target.result;
+                });
+
+                FR.readAsDataURL(this.files[0]);
+            }
+
+        }
+
+        document.getElementById("upload").addEventListener("change", readFile);
+    </script>
+</body>
+
 </html>
-

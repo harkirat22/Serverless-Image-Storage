@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Live Data Search using Multiple Tag in PHP with Ajax</title>  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css" />
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" crossorigin="anonymous"></script>
+  
+  <style>
+  .bootstrap-tagsinput {
+   width: 50%;
+  }
+  </style>
+ </head>
+ <body>
+  <div class="container">
+   <br />
+   <br />
+   <br />
+   <h4>Search Image using Multiple Tags</h4><br />
+   <div class="form-group">
+      <input type="text" id="tags" class="form-control" data-role="tagsinput" />
+      <button type="button" name="search" id="search" onclick="search()">Search</button>
+	  </div>
+	  <div id = "result">
+	  <p> The result is: </p>
+	  </div>
+	  </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+function search(){
+	console.log("hello");
+	var valuesArray = $("#tags").val().split(",");
+
+		
+		$.ajax(
+		{
+			url : '/test.html',
+			method: 'POST',
+			data: JSON.stringify({
+                    'usertags': valuesArray      
+                }),
+			contentType: 'application/json',
+			dataType: 'json',
+			success: function(response)
+			{
+			console.log(response);
+				
+			},
+			error: function()
+			{
+				alert("error loading");
+			}
+		});
+		
+
+
+
+}
+</script>
+ </body>
+</html>

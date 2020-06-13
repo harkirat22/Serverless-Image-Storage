@@ -4,10 +4,20 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
-
-    <!--Cognito JavaScript-->
     <script src="js/amazon-cognito-identity.min.js"></script>
     <script src="js/config.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" crossorigin="anonymous"></script>
+
+    <style>
+        .bootstrap-tagsinput {
+            width: 50%;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,6 +42,10 @@
             <p id="b64"></p>
             <p hidden><img id="img" height="150"></p>
 
+            <input type="text" id="tags" class="form-control" data-role="tagsinput" />
+            <button type="button" name="search" id="search" onclick="search()">Search</button>
+
+
         </div>
     </center>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -43,8 +57,10 @@
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
         var cognitoUser = userPool.getCurrentUser();
         var authToken;
-        var base64;
+
+
         window.onload = function() {
+
             if (cognitoUser != null) {
                 cognitoUser.getSession(function(err, session) {
                     if (err) {
@@ -87,37 +103,68 @@
 
                 FR.addEventListener("load", function(e) {
                     document.getElementById("img").src = e.target.result;
-                    base64 = e.target.result.replace(/^data:image.+;base64,/, '');
+
+                    var base = e.target.result.replace(/^data:image.+;base64,/, '');
+                    $.ajax({
+                        method: 'POST',
+                        url: 'https://9rkgyf1hxg.execute-api.us-east-1.amazonaws.com/prod/uploadimage-s3',
+                        headers: {
+                            Authorization: authToken
+                        },
+                        contentType: 'applicatipn/json',
+                        data: JSON.stringify({
+                            'name': 'testing.jpg',
+                            'file': base
+                        }),
+
+                        success: function(result) {
+                            alert(result.message);
+                        },
+                        error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                            console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                            console.error('Response: ', jqXHR.responseText);
+                            alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+                        }
+                    });
 
                 });
 
                 FR.readAsDataURL(this.files[0]);
             }
-            console.log(base64);
+
+
+
+        }
+
+        function search() {
+            console.log("hello");
+            var valuesArray = $("#tags").val().split(",");
+            console.log(authToken);
 
             $.ajax({
+                url: 'https://wom9vhrkta.execute-api.us-east-1.amazonaws.com/beta/search-images',
                 method: 'POST',
-                url: 'https://9rkgyf1hxg.execute-api.us-east-1.amazonaws.com/prod/uploadimage-s3',
                 headers: {
                     Authorization: authToken
                 },
                 data: JSON.stringify({
-                    'name': 'testing.jpg',
-                    'file': base64
+                    'usertags': valuesArray
                 }),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
 
-                success: function(result) {
-                    alert(result.message);
                 },
-                error: function ajaxError(jqXHR, textStatus, errorThrown) {
-                    console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-                    console.error('Response: ', jqXHR.responseText);
-                    alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+                error: function() {
+                    alert("error loading");
                 }
             });
+
+
+
+
         }
-
-
 
         document.getElementById("upload").addEventListener("change", readFile);
     </script>
