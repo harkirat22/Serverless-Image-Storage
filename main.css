@@ -1,7 +1,7 @@
 input[type=text],
 input[type=password],
 input[type=email] {
-    width: 40%;
+    width: 60%;
     padding: 12px 10px;
     margin: 8px 0;
     box-sizing: border-box;
@@ -38,9 +38,46 @@ h1 {
     font-size: 1.8em;
 }
 
-div {
-    border-radius: 5px;
-    background-color: #f2f2f2;
+.container{
+	background-color: rgba(255, 255, 255, .20);  
+	backdrop-filter: blur(20px);
+    border-radius: 5px;    
     padding: 10px;
-    margin: 10em 20em;
+    margin: 5em 25em 8em 25em;
 }
+
+body  {
+	background-image: url("b5.png");	
+	background-size: cover;	
+	height:auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	position: relative;
+	background-attachment: fixed;
+	margin: 0;
+}
+.header {
+  padding: 10px;
+  text-align: center;
+  background: black;
+  color: white;
+  opacity:0.6;
+  
+}
+
+
+.bootstrap-tagsinput {
+    width: 90%;
+}
+.column {
+	float: left;
+	padding: 10px;
+}
+.column.side {
+	width: 25%;
+}
+.column.middle {
+	width: 50%;
+}
+
+
