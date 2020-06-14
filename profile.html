@@ -14,78 +14,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" crossorigin="anonymous"></script>
 
     <style>
-        
+
     </style>
 </head>
 
 <body>
     <center>
-        <div class="container">		
-            <div class="row">	
-				<div class="column side" style="text-align: left;padding-left: 3em;padding-top:1.3em;">
-					<label id="email_value" style="font-size:1.5em;"> </label>
-				</div>
-				<div class="column middle" style="font-size: 2em;">
-					<b>Welcome to TagStore!</b>
-				</div>				
-				<div class="column side" style="text-align: right;padding-right: 3em;">					 
-					<button type="button" onclick="signOut()">Sign out</button>				
-				</div>
-            </div>			
-		</div>
-	</center>
-	
-	<center>
+        <div class="container">
+            <div class="row">
+                <div class="column side" style="text-align: left;padding-left: 3em;padding-top:1.3em;">
+                    <label id="email_value" style="font-size:1.5em;"> </label>
+                </div>
+                <div class="column middle" style="font-size: 2em;">
+                    <b>Welcome to TagStore!</b>
+                </div>
+                <div class="column side" style="text-align: right;padding-right: 3em;">
+                    <button type="button" onclick="signOut()">Sign out</button>
+                </div>
+            </div>
+        </div>
+    </center>
+
+    <center>
         <div class="container" style="margin-top:-7.5em;">
-			<div style="margin-top:2em;">
-				<div class="column side" style="font-size: 1.5em; text-align:left">
-					<b>Image Upload:</b>
-				</div>
-				<div class="column middle" style="font-size: 1.5em; padding-left: 5em">
-					<input id="upload" type='file'>
-					<p id="b64"></p>
-					<p hidden><img id="img" height="150"></p>
-				</div>			
-			</div>	
-		</div>
-	</center>
-	
-	<center>
+            <div style="margin-top:2em;">
+                <div class="column side" style="font-size: 1.5em; text-align:left">
+                    <b>Image Upload:</b>
+                </div>
+                <div class="column middle" style="font-size: 1.5em; padding-left: 5em">
+                    <input id="upload" type='file'>
+                    <p id="b64"></p>
+                    <p hidden><img id="img" height="150"></p>
+                    <p id="render_message"> </p>
+                </div>
+            </div>
+        </div>
+    </center>
+
+    <center>
         <div class="container" style="margin-top:-7.5em;">
-			<div style="margin-top:2em;">
-				<div class="column side" style="font-size: 1.5em; text-align:left">
-					<b>Find Query:</b>
-				</div>
-				<div class="column middle" style="font-size: 1.5em; padding-left: 4.5em">
-					<input type="text" id="tags" class="form-control" data-role="tagsinput" />
-				</div>
-					
-				<div class="column side" style="text-align: right;padding-right: 2em;padding-top: 0em;">					
-					<button type="button" onclick="search()">Search</button>					
-				</div>			
-			</div>					
-		</div>		
-	</center>
-	
-	<center>
+            <div style="margin-top:2em;">
+                <div class="column side" style="font-size: 1.5em; text-align:left">
+                    <b>Find Query:</b>
+                </div>
+                <div class="column middle" style="font-size: 1.5em; padding-left: 4.5em">
+                    <input type="text" id="tags" class="form-control" data-role="tagsinput" />
+                </div>
+
+                <div class="column side" style="text-align: right;padding-right: 2em;padding-top: 0em;">
+                    <button type="button" onclick="search()">Search</button>
+                </div>
+            </div>
+        </div>
+    </center>
+
+    <center>
         <div class="container" style="margin-top:-7.5em;">
-			<div style="margin-top:2em;">
-				<div class="column side" style="font-size: 1.5em; text-align:left">
-					<b>Resultant Links:</b>
-				</div>
-				<div class="column middle" style="font-size: 1em; font-weight:bold; padding-left: 4.5em">
-					<p id="image_links"> </p>
-				</div>
-					
-				<div class="column side" >					
-										
-				</div>				
-			</div>
-		</div>
-	</center>
-	
-	
-		
+            <div style="margin-top:2em;">
+                <div class="column side" style="font-size: 1.5em; text-align:left">
+                    <b>Resultant Links:</b>
+                </div>
+                <div class="column middle" style="font-size: 1em; font-weight:bold; padding-left: 4.5em">
+                    <p id="image_links"> </p>
+                </div>
+
+                <div class="column side">
+
+                </div>
+            </div>
+        </div>
+    </center>
+
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
         var data = {
@@ -138,14 +139,14 @@
             if (this.files && this.files[0]) {
 
                 var FR = new FileReader();
-				var file_name = this.files[0].name;
-				
+                var file_name = this.files[0].name;
+
 
                 FR.addEventListener("load", function(e) {
                     document.getElementById("img").src = e.target.result;
 
                     var base = e.target.result.replace(/^data:image.+;base64,/, '');
-					
+
                     $.ajax({
                         method: 'POST',
                         url: 'https://9rkgyf1hxg.execute-api.us-east-1.amazonaws.com/prod/uploadimage-s3',
@@ -159,7 +160,9 @@
                         }),
 
                         success: function(result) {
-                            alert(result.message);
+
+                            document.getElementById("render_message").innerHTML = result.message;
+
                         },
                         error: function ajaxError(jqXHR, textStatus, errorThrown) {
                             console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
@@ -195,7 +198,7 @@
                 dataType: 'json',
                 success: function(response) {
                     console.log(response.body);
-					document.getElementById("image_links").innerHTML = response.body;
+                    document.getElementById("image_links").innerHTML = response.body;
 
                 },
                 error: function() {
