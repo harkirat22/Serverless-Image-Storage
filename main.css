@@ -30,7 +30,7 @@ button[type=button] {
 
 a {
     text-decoration: none;
-    color: #003366;
+    color: red;
     font-weight: bold;
 }
 
@@ -38,13 +38,66 @@ h1 {
     font-size: 1.8em;
 }
 
+
+.container:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+	box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+    filter: blur(10px);
+}
+
+
+
+
+/*.container{
+	box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .5);    
+	backdrop-filter: blur(25px);
+    border-radius: 5px;    
+    padding: 10px;
+    margin: 5em 25em 8em 25em;
+	z-index: 1;
+    background: inherit;
+    overflow: hidden;
+}
+
+
+.container:before {
+    content: "";
+    position: absolute;
+    background: inherit;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+    filter: blur(10px);
+    margin: 5em 25em 8em 25em;
+}
+*/
+
 .container{
-	background-color: rgba(255, 255, 255, .20);  
-	backdrop-filter: blur(20px);
+	background: black;
+	opacity:0.75;
+	color:white !important;
     border-radius: 5px;    
     padding: 10px;
     margin: 5em 25em 8em 25em;
 }
+
+
+/*filter: opacity(0.8)
+background-color: rgba(0, 0, 0);
+
+existing:
+background-color: rgba(255, 255, 255, .20);  
+	backdrop-filter: blur(20px);*/
+
+
 
 body  {
 	background-image: url("b5.png");	
@@ -61,7 +114,7 @@ body  {
   text-align: center;
   background: black;
   color: white;
-  opacity:0.6;
+  opacity:0.75;
   
 }
 
